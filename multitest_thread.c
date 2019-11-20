@@ -1,61 +1,66 @@
 #include <stdio.h>
-#include<stdlib.h>
+#include <stdlib.h>
+#include <unistd.h>
 #include <pthread.h>
 
-int flag = 0; 
+char *mode() {
+	return "multithreaded";
+}
 
-
-struct input {
-    int *array;
-    int size;
+typedef struct _input {
+	int *array;
+	int size;
 	int value;
 	int chunkSize;
 	int threadNumber;
-};
+} input;
 
+void *linearThreadSearch(void *args) {
+	int num = ((input *) args)->threadNumber;
+	int blockSize = ((input *) args)->chunkSize;
+	int *array = ((input *) args)->array;
+	int value = ((input *) args)->value;
+	
+	int i;
+	for (i = num * blockSize; i < (num + 1) * blockSize; i++) {
+		if (array[i] == value) {
+			int *index = (int *) malloc(sizeof(int));
+			*index = i;
+			pthread_exit(index);
+		}
+	}
 
-
-void* linearThreadSearch(void* args) { 
-
-
-   int num = ((struct input*)args)->threadNumber;
-   int blockSize=((struct input*)args)->chunkSize;
-   int *array=((struct input*)args)->array;
-   int value=((struct input*)args)->value;
-   for (int i = num * blockSize; i < ((num + 1) * blockSize); i++){
-      if (array[i] == value){
-		 int *index=malloc(sizeof(int));
-         *index=i;
-		 pthread_exit(index);
-	  }
-   }
-	int *exit=malloc(sizeof(int));
-	*exit=-1;
+	int *exit = (int *) malloc(sizeof(int));
+	*exit = -1;
 	pthread_exit(exit);
 }
 
-int search(int *array, int size, int value, int chunkSize) {
-struct input *parameters=(struct input *) malloc(sizeof(struct input));
+int _search(int *array, int size, int value, int chunkSize) {
+	int numThreads = size / chunkSize;
+	if(size % chunkSize != 0) {
+		numThreads++;
+	}
 
-   void *status;
-   pthread_t thread[size/chunkSize];
-   for (int i = 0; i < size; i+=chunkSize) { 
-	parameters->array=array;
-	parameters->size=size;
-	parameters->value=value;
-	parameters->chunkSize=chunkSize;
-	parameters->threadNumber=i;
-      pthread_create(&thread[i], NULL, linearThreadSearch, (void*)parameters);
-   }
-   for (int i = 0; i < size; i+=chunkSize) {
-      pthread_join(thread[i], &status); 
-	  if (*(int*) status !=-1){
-	   return i * chunkSize + status;        
-   }
-   }
-   
-  
+	pthread_t thread[numThreads];
+	
+	int i;
+	for (i = 0; i < numThreads; i++) {
+		input *parameters = (input *) malloc(sizeof(input));
+		
+		parameters->array = array;
+		parameters->size = size;
+		parameters->value = value;
+		parameters->chunkSize = chunkSize;
+		parameters->threadNumber = i;
+		pthread_create(&thread[i], NULL, linearThreadSearch, (void *) parameters);
+	}
+
+	void *status;
+	for (i = 0; i < numThreads; i++) {
+		pthread_join(thread[i], &status);
+		
+		if (*((int *) status) != -1) {
+			return *((int *) status);
+		}
+	}
 }
-
-
-

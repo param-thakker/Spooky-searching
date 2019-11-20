@@ -1,1 +1,1 @@
-int search();
+#define search(array, size, value, chunkSize) _search(array, size, value, chunkSize)
