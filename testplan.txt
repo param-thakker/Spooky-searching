@@ -1,0 +1,4 @@
+Test A:
+	Search through an array 40 times, starting with a length of 250 elements and increasing the array size by 250 elements each subsequent test, searching through an array 10000 elements on the 40th time. Each block will always contain at most 250 elements.
+
+Test B:

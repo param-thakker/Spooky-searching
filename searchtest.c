@@ -65,9 +65,9 @@ void calculateStats(double *times, int numTests) {
 }
 
 void testA() {
-	int minSize = 500;
+	int minSize = 250;
 	int maxSize = 10000;
-	int step = 500;
+	int step = 250;
 	int numTests = (maxSize - minSize) / step + 1;
 	int chunkSize = 250;
 
