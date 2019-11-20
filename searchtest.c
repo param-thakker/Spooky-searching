@@ -96,6 +96,44 @@ void testA() {
 	printf("searching %d values at a time on %d arrays from size %d to %d\n", chunkSize, numTests, minSize, maxSize);
     calculateStats(times, numTests);
 }
+void testB(){
+    int *array=genArray(250);
+    struct timespec start, end;
+    int numTests=100;
+    double times[numTests];
+    int chunkSize = 250;
+    int size=250;
+    int index=0;
+    if (mode()==1){
+        printf("PROCESS\n");
+    }
+    else if (mode()==2){
+        printf("THREAD\n");
+    }
+    int i;
+    for (i=0;i<100;i++){
+    clock_gettime(CLOCK_REALTIME, &start);
+	int index = search(array, size, 49, chunkSize);
+	clock_gettime(CLOCK_REALTIME, &end);
+    int simpleIndex = simpleSearch(array, size, 49);
+    if(index != simpleIndex) {
+			printf("ERROR: incorrect index (expected %d but found %d)\n", simpleIndex, index);
+	}
+    int randIndex=rand()%size;
+    int temp=array[index];
+    array[index]=array[randIndex];
+    array[randIndex]=temp;
+		
+    double time = (end.tv_sec - start.tv_sec) * 1e3 + (end.tv_nsec - start.tv_nsec) / 1e6;
+	times[index] = time;
+    index++;
+    }
+    calculateStats(times,100);
+    
+		
+	
+
+}
 
 int main() {
     srand(time(0));
