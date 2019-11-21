@@ -2,3 +2,8 @@ Test A:
 	Search through an array 40 times, starting with a length of 250 elements and increasing the array size by 250 elements each subsequent test, searching through an array 10000 elements on the 40th time. Each block will always contain at most 250 elements.
 
 Test B:
+	For processes, search an array of 250 elements 100 times, using one process to search through the entire array.
+	For threads, search through arrays of 20 different sizes, starting with a length of 250 elements and increasing the array size by 250 elements each subsequent test, searching through an array 5000 elements on the 20th time. Each block will always contain at most 250 elements. For each size, search through the array 100 times and compute the average time. (For example, search through an array of 250 elements 100 times, then search through an array of 500 elements 100 times, etc.)
+
+Test C:
+	Search through an array of 250 elements, varying the number of elements each process or thread will be given from 1 to 250. For each number of elements, search 100 times and compute the average time. (For example, search through the array 100 times giving each thread or process 1 element, then 100 times giving each thread or process 2 elements, etc.)

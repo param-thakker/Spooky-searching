@@ -19,10 +19,11 @@ void *linearThreadSearch(void *args) {
 	int num = ((input *) args)->threadNumber;
 	int blockSize = ((input *) args)->chunkSize;
 	int *array = ((input *) args)->array;
+	int size = ((input *) args)->size;
 	int value = ((input *) args)->value;
 	
 	int i;
-	for (i = num * blockSize; i < (num + 1) * blockSize; i++) {
+	for (i = num * blockSize; i < (num + 1) * blockSize && i < size; i++) {
 		if (array[i] == value) {
 			int *index = (int *) malloc(sizeof(int));
 			*index = i;
@@ -56,11 +57,14 @@ int _search(int *array, int size, int value, int chunkSize) {
 	}
 
 	void *status;
+	int index;
 	for (i = 0; i < numThreads; i++) {
 		pthread_join(thread[i], &status);
 		
 		if (*((int *) status) != -1) {
-			return *((int *) status);
+			index = *((int *) status);
 		}
 	}
+	
+	return index;
 }
