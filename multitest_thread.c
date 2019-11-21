@@ -3,8 +3,8 @@
 #include <unistd.h>
 #include <pthread.h>
 
-char *mode() {
-	return "multithreaded";
+int mode() {
+	return 2;
 }
 
 typedef struct _input {

@@ -3,8 +3,8 @@
 #include <stdlib.h>
 #include <sys/types.h>
 
-char *mode() {
-	return "multiprocess";
+int mode() {
+	return 1;
 }
 
 int _search(int *array, int size, int value, int chunkSize) {
