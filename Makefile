@@ -10,6 +10,6 @@ thread:
 	gcc searchtest.c multitest_thread.o -o searchtest -lpthread -lm
 
 clean:
-	rm searchtest
-	rm multitest_proc.o
-	rm multitest_thread.o
+	rm -f searchtest
+	rm -f multitest_proc.o
+	rm -f multitest_thread.o
