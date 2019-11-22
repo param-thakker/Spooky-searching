@@ -4,6 +4,7 @@
 #include <errno.h>
 #include <sys/types.h>
 
+// Indicates that the program is currently running in process mode
 int mode() {
 	return 1;
 }
@@ -37,6 +38,7 @@ int _search(int *array, int size, int value, int chunkSize) {
 		}
 	}
 
+	// Wait for each process, calculating the correct index in the process
 	int status;
 	int index;
 	for(i = 0; i < numProcs; i++) {

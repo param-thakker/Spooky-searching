@@ -4,6 +4,7 @@
 #include <math.h>
 #include "multitest.h"
 
+// Generates an array containing every integer from 1 to size, randomly shuffled.
 int *genArray(int size) {
 	int *array = malloc(sizeof(int) * size);
 
@@ -22,6 +23,7 @@ int *genArray(int size) {
 	return array;
 }
 
+// Performs a simple linear search on the array for the specified value
 int simpleSearch(int *array, int size, int value) {
 	int i;
 	for(i = 0; i < size; i++) {
@@ -29,8 +31,11 @@ int simpleSearch(int *array, int size, int value) {
 			return i;
 		}
 	}
+
+	return -1;
 }
 
+// Calculates the minimum, maximum, average, and standard deviation of the given array and prints it all to STDOUT.
 void calculateStats(double *times, int numTests) {
 	double min = times[0];
 	double max = times[0];
@@ -66,6 +71,7 @@ void calculateStats(double *times, int numTests) {
 	printf("\n");
 }
 
+// test A from the test plan
 void testA() {
 	int minSize = 250;
 	int maxSize = 10000;
@@ -81,7 +87,7 @@ void testA() {
 
 	int size;
 	for(size = minSize; size <= maxSize; size += step) {
-		//printf("Search #%d (%d elements)\n", size / minSize, size);
+		printf("Search #%d (%d elements)\n", size / minSize, size);
 	
 		int *array = genArray(size);
 		
@@ -101,7 +107,8 @@ void testA() {
 	calculateStats(times, numTests);
 }
 
-void testB(){
+// test B from the test plan
+void testB() {
 	int numTests;
 	int chunkSize = 250;
 	int size = 250;
@@ -147,7 +154,7 @@ void testB(){
 		
 		int size;
 		for(size = minSize; size <= maxSize; size += step) {
-			//printf("Search #%d (%d elements)\n", size / minSize, size);
+			printf("Search #%d (%d elements)\n", size / minSize, size);
 			
 			int *array = genArray(size);
 			
@@ -175,13 +182,14 @@ void testB(){
 			double avgTime = sum / 100;
 			times[size / step - 1] = avgTime;
 			
-			printf("%d,%f\n", size, avgTime);
+			// printf("%d,%f\n", size, avgTime);
 		}
 		
 		calculateStats(times, numTests);
 	}
 }
 
+// test C from the test plan
 void testC() {
 	int size = 250;
 	int minChunkSize = 1;
@@ -197,7 +205,7 @@ void testC() {
 
 	int chunkSize;
 	for(chunkSize = minChunkSize; chunkSize <= maxChunkSize; chunkSize++) {
-		//printf("Search #%d (%d %s)\n", chunkSize - minChunkSize + 1, (int) ceil((double) size / (double) chunkSize), mode() == PROCESS ? "processes" : "threads");
+		printf("Search #%d (%d %s)\n", chunkSize - minChunkSize + 1, (int) ceil((double) size / (double) chunkSize), mode() == PROCESS ? "processes" : "threads");
 		
 		double sum = 0;
 		int i;
@@ -223,7 +231,7 @@ void testC() {
 		double avgTime = sum / 100;
 		times[chunkSize - minChunkSize] = avgTime;
 		
-		printf("%d,%f\n", chunkSize, avgTime);
+		// printf("%d,%f\n", chunkSize, avgTime);
 	}
 	
 	calculateStats(times, numTests);
@@ -232,8 +240,8 @@ void testC() {
 int main() {
 	srand(time(0));
 
-//	testA();
-//	testB();
+	testA();
+	testB();
 	testC();
 
 	return 0;

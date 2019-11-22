@@ -3,6 +3,7 @@
 #include <unistd.h>
 #include <pthread.h>
 
+// Indicates that the program is currently running in thread mode
 int mode() {
 	return 2;
 }
@@ -56,6 +57,7 @@ int _search(int *array, int size, int value, int chunkSize) {
 		pthread_create(&thread[i], NULL, linearThreadSearch, (void *) parameters);
 	}
 
+	// Join on each thread, retrieving the correct index in the process
 	void *status;
 	int index;
 	for (i = 0; i < numThreads; i++) {
